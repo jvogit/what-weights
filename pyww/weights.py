@@ -7,7 +7,7 @@ clip_weight_kg = 0
 # standard lbs
 weights_lbs = [5, 10, 25, 50, 100, 250, 350, 450, 550]
 bar_weight_lbs = 450
-target_weight_lbs = 3150
+target_weight_lbs = 40000
 clip_weight_lbs = 0
 
 # unlimited amount of each weights
@@ -52,7 +52,7 @@ def what_weights_limits(target_weight, weights, limits):
     
     return dp.get(target_weight, (None, None))
 
-amt, combos = what_weights((target_weight_kg - bar_weight_kg - clip_weight_kg) // 2, weights_kg)
-# amt, combos = what_weights_limits((240 - 20) // 2, [10, 20, 25], [2, 2, 2])
+# amt, combos = what_weights((target_weight_lbs - bar_weight_lbs - clip_weight_lbs) // 2, weights_lbs)
+amt, combos = what_weights_limits((240 - 20) // 2, [10, 20, 25], [2, 2, 2])
 
 print(combos)

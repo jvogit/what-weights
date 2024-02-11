@@ -1,5 +1,5 @@
 <script>
-    import HelloWorld from "$lib/HelloWorld.svelte";
+    import WeightCalculatorlatorForm from "$lib/WeightCalculatorlatorForm.svelte";
 </script>
 
-<HelloWorld />
+<WeightCalculatorlatorForm />

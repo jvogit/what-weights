@@ -1,13 +1,25 @@
 <script lang="ts">
-    import WeightPlate from "$lib/WeightPlate.svelte";
+    import BarbellWeight from "$lib/weightplate/BarbellWeight.svelte";
+    import {
+        WeightPlateColor,
+        WeightPlateSize,
+    } from "../../lib/weightplate/weighttypes";
+    const weightMaps = new Map<number, [WeightPlateSize, WeightPlateColor]>([
+        [1, [WeightPlateSize.STD, WeightPlateColor.RED]],
+        [2, [WeightPlateSize.STD, WeightPlateColor.BLUE]],
+        [3, [WeightPlateSize.STD, WeightPlateColor.YELLOW]],
+        [4, [WeightPlateSize.STD, WeightPlateColor.GREEN]],
+        [5, [WeightPlateSize.STD, WeightPlateColor.WHITE]],
+        [6, [WeightPlateSize.SMALL, WeightPlateColor.RED]],
+        [7, [WeightPlateSize.SMALL, WeightPlateColor.BLUE]],
+        [8, [WeightPlateSize.SMALL, WeightPlateColor.YELLOW]],
+        [9, [WeightPlateSize.SMALL, WeightPlateColor.GREEN]],
+        [10, [WeightPlateSize.SMALL, WeightPlateColor.WHITE]],
+
+    ]);
 </script>
 
-<div class="container">
-    <div class="barbell-collar" />
-    <WeightPlate weight={1} />
-    <WeightPlate weight={2} />
-    <div class="barbell-sleeve" />
-</div>
+<BarbellWeight weights={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]} weightPlateStyleMap={weightMaps} />
 
 <style>
     .container {
@@ -15,18 +27,17 @@
         justify-content: center;
         align-items: center;
         height: 100%;
-        gap: 0.2rem;
     }
 
     .barbell-sleeve {
         flex-grow: 1;
-        height: 1.2rem;
-        background-color: #000000;
+        height: 25px;
+        background-image: linear-gradient(to right, silver, gray);
     }
 
     .barbell-collar {
-        width: 1rem;
-        height: 2.5rem;
-        background-color: #000000;
+        width: 20px;
+        height: 50px;
+        background-image: linear-gradient(to right, silver, gray);
     }
 </style>

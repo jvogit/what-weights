@@ -1,0 +1,2 @@
+# what-weights
+Given a set of plates, calculates the minimum amount needed to load a target weight. This problem is an extension of the coin change problem. This app has the ability to give all possible combinations using the minimum amount of plates!

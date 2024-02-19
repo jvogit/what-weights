@@ -21,6 +21,7 @@
 </script>
 
 <div class="container">
+    <div class="barbell-shaft" />
     <div class="barbell-collar" />
     {#each weights as weight}
         <WeightPlate
@@ -51,7 +52,9 @@
         background-image: linear-gradient(to right, silver, gray);
     }
 
-    .barbell-clip {
-        
+    .barbell-shaft {
+        width: 30px;
+        height: 15px;
+        background-image: linear-gradient(to right, silver, gray);
     }
 </style>

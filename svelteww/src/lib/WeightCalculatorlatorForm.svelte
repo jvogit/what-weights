@@ -5,90 +5,91 @@
         what_weights_unlimited,
     } from "$lib/pkg/wasmww";
     import { extract_weights } from "./utils";
+    import {
+        STD_OLYMPIC_KG,
+        STD_OLYMPIC_LB,
+        type WeightPlateSet,
+    } from "./weightplate/weighttypes";
+    import BarbellWeight from "./weightplate/BarbellWeight.svelte";
 
     onMount(async () => {
         await init();
     });
 
+    const weight_plates = [STD_OLYMPIC_KG, STD_OLYMPIC_LB];
+
     let out: MinWeightsOutput | undefined;
-    $: out_min_amt = out?.amt;
-    $: out_weights = extract_weights(out);
+    $: outMinAmt = out?.amt;
+    $: outWeights = extract_weights(out);
+    let targetWeight: number;
+    let selectedWeightPlateSet: WeightPlateSet;
+    let selectedBarbellWeight: number;
+    let isClipWeightSelected: boolean = false;
 
     let calculate = () => {
-        let in_weight =
-            target_weight * 10 - selected_weight_plates.barbell_weight;
-        if (selected_clip_weight)
-            in_weight -= selected_weight_plates.clip_weight;
-
-        in_weight /= 2;
+        let inWeight =
+            (selectedWeightPlateSet.parseWeight(targetWeight) -
+                selectedBarbellWeight) /
+            2;
+        if (isClipWeightSelected) inWeight -= selectedWeightPlateSet.clipWeight;
 
         out = what_weights_unlimited(
-            in_weight,
-            new Uint32Array(selected_weight_plates.weights),
+            inWeight,
+            new Uint32Array(selectedWeightPlateSet.weights),
         );
     };
-
-    let target_weight: number;
-    let selected_weight_plates: any | undefined;
-
-    const STD_KG = {
-        id: 1,
-        display_name: "Standard KGs Plates",
-        unit: "kg",
-        barbell_weight: 200,
-        clip_weight: 50,
-        weights: [5, 10, 15, 20, 25, 50, 100, 150, 200, 250],
-    };
-    const STD_LBS = {
-        id: 2,
-        display_name: "LB plates",
-        unit: "lb",
-        barbell_weight: 450,
-        clip_weight: 100,
-        weights: [25, 50, 100, 250, 350, 450, 550],
-    };
-
-    let weight_plates = [STD_KG, STD_LBS];
-    let selected_clip_weight: boolean = false;
 </script>
 
 <h1>Calculate Weights</h1>
 <form on:submit|preventDefault={calculate}>
-    <label>
-        Target Weight:
-        <input type="number" bind:value={target_weight} />
-    </label>
     <h2>Weight Plates Set</h2>
-    <select bind:value={selected_weight_plates}>
+    <select bind:value={selectedWeightPlateSet}>
         {#each weight_plates as weight_plate}
             <option value={weight_plate}>
-                {weight_plate.display_name}
+                {weight_plate.displayName}
             </option>
         {/each}
     </select>
-    {#if selected_weight_plates}
+    {#if selectedWeightPlateSet}
+        <h2>Target Weight</h2>
+        <label>
+            Target Weight:
+            <input type="number" bind:value={targetWeight} />
+            {selectedWeightPlateSet.unit}
+        </label>
         <h2>Barbell Weight</h2>
-        {selected_weight_plates.barbell_weight / 10} {selected_weight_plates.unit}
+        <select bind:value={selectedBarbellWeight}>
+            {#each selectedWeightPlateSet.barbellWeights as barbellWeight}
+                <option value={barbellWeight}>
+                    {selectedWeightPlateSet.fmtWeightWithUnit(barbellWeight)}
+                </option>
+            {/each}
+        </select>
         <h2>Include Barbell Clip Weight</h2>
         <label>
             <input
                 type="checkbox"
-                bind:checked={selected_clip_weight}
+                bind:checked={isClipWeightSelected}
                 name="clip weight"
             />
-            {selected_weight_plates.clip_weight / 20} {selected_weight_plates.unit}
+            {selectedWeightPlateSet.fmtWeightWithUnit(
+                selectedWeightPlateSet.clipWeight,
+            )}
         </label>
     {/if}
-    <button type="submit" disabled={!selected_weight_plates}>
+    <button type="submit" disabled={!selectedWeightPlateSet}>
         Calculate
     </button>
 </form>
 
 {#if out}
-    <p>The minimum amount needed is: {out_min_amt}</p>
-    <div>
-        {#each out_weights as weights}
-            <li>{weights}</li>
+    <p>The minimum amount needed is: {outMinAmt}</p>
+    <div style="width: 17rem;">
+        {#each outWeights as weights}
+            <BarbellWeight
+                weights={weights.sort((a, b) => b - a)}
+                weightPlateStyleMap={selectedWeightPlateSet.weightsStyle}
+            />
         {/each}
     </div>
 {/if}

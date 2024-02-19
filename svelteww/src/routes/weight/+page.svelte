@@ -15,29 +15,12 @@
         [8, [WeightPlateSize.SMALL, WeightPlateColor.YELLOW]],
         [9, [WeightPlateSize.SMALL, WeightPlateColor.GREEN]],
         [10, [WeightPlateSize.SMALL, WeightPlateColor.WHITE]],
-
     ]);
 </script>
 
-<BarbellWeight weights={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]} weightPlateStyleMap={weightMaps} />
-
-<style>
-    .container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100%;
-    }
-
-    .barbell-sleeve {
-        flex-grow: 1;
-        height: 25px;
-        background-image: linear-gradient(to right, silver, gray);
-    }
-
-    .barbell-collar {
-        width: 20px;
-        height: 50px;
-        background-image: linear-gradient(to right, silver, gray);
-    }
-</style>
+<div style="width: 17rem;">
+    <BarbellWeight
+        weights={[1, 2, 3, 4]}
+        weightPlateStyleMap={weightMaps}
+    />
+</div>

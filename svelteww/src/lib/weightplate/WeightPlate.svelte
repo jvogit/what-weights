@@ -18,6 +18,14 @@
         border-radius: 3px;
     }
 
+    .weight-plate-med {
+        width: 15px;
+        height: 135px;
+        border-style: solid;
+        border-width: 1px;
+        border-radius: 3px;
+    }
+
     .weight-plate-sml {
         width: 15px;
         height: 100px;

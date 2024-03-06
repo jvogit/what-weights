@@ -32,6 +32,7 @@
                 selectedBarbellWeight) /
             2;
         if (isClipWeightSelected) inWeight -= selectedWeightPlateSet.clipWeight;
+        inWeight = Math.max(0, inWeight);
 
         out = what_weights_unlimited(
             inWeight,
@@ -43,7 +44,7 @@
 <h1>Calculate Weights</h1>
 <form on:submit|preventDefault={calculate}>
     <h2>Weight Plates Set</h2>
-    <select bind:value={selectedWeightPlateSet}>
+    <select bind:value={selectedWeightPlateSet} on:change={() => selectedBarbellWeight = selectedWeightPlateSet.barbellWeights[0]}>
         {#each weight_plates as weight_plate}
             <option value={weight_plate}>
                 {weight_plate.displayName}
@@ -70,6 +71,7 @@
             <input
                 type="checkbox"
                 bind:checked={isClipWeightSelected}
+                on:change={calculate}
                 name="clip weight"
             />
             {selectedWeightPlateSet.fmtWeightWithUnit(
@@ -84,11 +86,12 @@
 
 {#if out}
     <p>The minimum amount needed is: {outMinAmt}</p>
-    <div style="width: 17rem;">
+    <div style="display: flex;  flex-direction: column; gap: 10px; width: 17rem;">
         {#each outWeights as weights}
             <BarbellWeight
                 weights={weights.sort((a, b) => b - a)}
                 weightPlateStyleMap={selectedWeightPlateSet.weightsStyle}
+                clipped={isClipWeightSelected}
             />
         {/each}
     </div>

@@ -1,5 +1,6 @@
 export enum WeightPlateSize {
     STD = "weight-plate-std",
+    MEDIUM = "weight-plate-med",
     SMALL = "weight-plate-sml",
 }
 

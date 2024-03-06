@@ -78,4 +78,13 @@
             rgba(245, 243, 235, 1) 100%
         );
     }
+
+    .weight-plate-black {
+        background: rgb(0, 0, 0);
+        background: radial-gradient(
+            circle,
+            rgba(0, 0, 0, 1) 0%,
+            rgb(24, 24, 24, 1) 100%
+        );
+    }
 </style>

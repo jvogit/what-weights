@@ -6,6 +6,8 @@
     } from "$lib/pkg/wasmww";
     import { extract_weights } from "./utils";
     import {
+        GYM_PLATES_KG,
+        GYM_PLATES_LB,
         STD_OLYMPIC_KG,
         STD_OLYMPIC_LB,
         type WeightPlateSet,
@@ -16,7 +18,12 @@
         await init();
     });
 
-    const weight_plates = [STD_OLYMPIC_KG, STD_OLYMPIC_LB];
+    const weight_plates = [
+        STD_OLYMPIC_KG,
+        STD_OLYMPIC_LB,
+        GYM_PLATES_KG,
+        GYM_PLATES_LB,
+    ];
 
     let out: MinWeightsOutput | undefined;
     $: outMinAmt = out?.amt;
@@ -44,7 +51,11 @@
 <h1>Calculate Weights</h1>
 <form on:submit|preventDefault={calculate}>
     <h2>Weight Plates Set</h2>
-    <select bind:value={selectedWeightPlateSet} on:change={() => selectedBarbellWeight = selectedWeightPlateSet.barbellWeights[0]}>
+    <select
+        bind:value={selectedWeightPlateSet}
+        on:change={() =>
+            (selectedBarbellWeight = selectedWeightPlateSet.barbellWeights[0])}
+    >
         {#each weight_plates as weight_plate}
             <option value={weight_plate}>
                 {weight_plate.displayName}
@@ -86,13 +97,20 @@
 
 {#if out}
     <p>The minimum amount needed is: {outMinAmt}</p>
-    <div style="display: flex;  flex-direction: column; gap: 10px; width: 17rem;">
+    <div
+        style="display: flex;  flex-direction: column; gap: 10px; width: 17rem;"
+    >
         {#each outWeights as weights}
-            <BarbellWeight
-                weights={weights.sort((a, b) => b - a)}
-                weightPlateStyleMap={selectedWeightPlateSet.weightsStyle}
-                clipped={isClipWeightSelected}
-            />
+            <div>
+                <BarbellWeight
+                    weights={weights.sort((a, b) => b - a)}
+                    weightPlateStyleMap={selectedWeightPlateSet.weightsStyle}
+                    clipped={isClipWeightSelected}
+                />
+                <div style="padding-top: 10px;">
+                    {weights.map(weight => selectedWeightPlateSet.fmtWeightWithUnit(weight)).join(", ")}
+                </div>
+            </div>
         {/each}
     </div>
 {/if}

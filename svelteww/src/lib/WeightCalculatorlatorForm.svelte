@@ -108,7 +108,7 @@
                     clipped={isClipWeightSelected}
                 />
                 <div style="padding-top: 10px;">
-                    {weights.map(weight => selectedWeightPlateSet.fmtWeightWithUnit(weight)).join(", ")}
+                    {weights.sort((a, b) => b - a).map(weight => selectedWeightPlateSet.fmtWeightWithUnit(weight)).join(", ")}
                 </div>
             </div>
         {/each}

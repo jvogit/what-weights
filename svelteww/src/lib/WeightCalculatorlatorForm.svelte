@@ -103,12 +103,12 @@
         {#each outWeights as weights}
             <div>
                 <BarbellWeight
-                    weights={weights.sort((a, b) => b - a)}
+                    weights={weights}
                     weightPlateStyleMap={selectedWeightPlateSet.weightsStyle}
                     clipped={isClipWeightSelected}
                 />
                 <div style="padding-top: 10px;">
-                    {weights.sort((a, b) => b - a).map(weight => selectedWeightPlateSet.fmtWeightWithUnit(weight)).join(", ")}
+                    {weights.map(weight => selectedWeightPlateSet.fmtWeightWithUnit(weight)).join(", ")}
                 </div>
             </div>
         {/each}

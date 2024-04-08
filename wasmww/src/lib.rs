@@ -1,6 +1,6 @@
 mod utils;
 
-use std::collections::{HashMap, HashSet};
+use std::{cmp::Reverse, collections::{HashMap, HashSet}};
 use wasm_bindgen::prelude::*;
 
 type MinWeights = (usize, HashSet<Vec<usize>>);
@@ -24,9 +24,12 @@ impl MinWeightsOutput {
 
 impl From<MinWeights> for MinWeightsOutput {
     fn from(value: MinWeights) -> Self {
+        let mut weights: Vec<Vec<usize>> = value.1.into_iter().collect();
+        weights.sort_by(|a, b| b.cmp(a));
+
         Self {
             amt: value.0,
-            weights: value.1.into_iter().collect(),
+            weights,
         }
     }
 }
@@ -55,7 +58,7 @@ pub fn what_weights_unlimited(
                     .into_iter()
                     .map(|mut v| {
                         v.push(*weight);
-                        v.sort();
+                        v.sort_by_key(|w| Reverse(*w));
 
                         v
                     })
@@ -102,7 +105,7 @@ pub fn what_weights_limited(
                         .into_iter()
                         .map(|mut v| {
                             v.push(*weight);
-                            v.sort();
+                            v.sort_by_key(|w| Reverse(*w));
 
                             v
                         })
